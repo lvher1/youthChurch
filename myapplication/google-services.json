@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "368535210344",
+    "project_id": "banseo-youth",
+    "storage_bucket": "banseo-youth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:368535210344:android:abe1dba238f1e1b93a2edd",
+        "android_client_info": {
+          "package_name": "com.banseo.youth"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "368535210344-2flvrfccvhlblanqt4mdt8mie0g5ke18.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.banseo.youth",
+            "certificate_hash": "27005e8227c4db10f4e47ee64c6d1f3394fdf537"
+          }
+        },
+        {
+          "client_id": "368535210344-tpp18bosdg2t7mn0edh377m8k35s7su4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsGB8sI60o7_3-7pGThi9uHhQ9ceb7_YU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "368535210344-tpp18bosdg2t7mn0edh377m8k35s7su4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "368535210344-24g72u8pequq1dip52j9vfakseq8cavo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.banseo.youth.youthchurch"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:368535210344:android:9c818c88ca189a723a2edd",
+        "android_client_info": {
+          "package_name": "com.banseo.youth.youthchurch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "368535210344-tpp18bosdg2t7mn0edh377m8k35s7su4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDsGB8sI60o7_3-7pGThi9uHhQ9ceb7_YU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "368535210344-tpp18bosdg2t7mn0edh377m8k35s7su4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "368535210344-24g72u8pequq1dip52j9vfakseq8cavo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.banseo.youth.youthchurch"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>368535210344-24g72u8pequq1dip52j9vfakseq8cavo.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.368535210344-24g72u8pequq1dip52j9vfakseq8cavo</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>368535210344-2flvrfccvhlblanqt4mdt8mie0g5ke18.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAEHh3fTK1n1J27tzOo_ii9-b6_E1OvTOc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>368535210344</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.banseo.youth.youthchurch</string>
+	<key>PROJECT_ID</key>
+	<string>banseo-youth</string>
+	<key>STORAGE_BUCKET</key>
+	<string>banseo-youth.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:368535210344:ios:f7207d2897ecc6a33a2edd</string>
+</dict>
+</plist>
