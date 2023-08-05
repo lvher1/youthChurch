@@ -15,7 +15,7 @@ class _WidgetTreeState extends State<WidgetTree>{
   Widget build(BuildContext context){
     return StreamBuilder(stream: Auth().authStateChanges,builder: (context,snapshot){
       if(snapshot.hasData){
-        return const QuietTime();
+        return QuietTime();
       }else{
         return const LoginPage();
       }

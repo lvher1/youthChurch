@@ -14,7 +14,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp()); //app 시작
+  runApp( MyApp()); //app 시작
 }
 //먼저 플러커 코어 초기화
 
@@ -39,8 +39,8 @@ class MyApp extends StatelessWidget {
             backgroundColor: Colors.lightGreenAccent),
         debugShowCheckedModeBanner: false,
         home: WidgetTree()
-    //
-    );
+        //
+        );
   }
 }
 
@@ -53,16 +53,16 @@ class QuietTime extends StatefulWidget {
 
 class _QuietTimeState extends State<QuietTime>
     with SingleTickerProviderStateMixin {
-
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = <Widget>[
     QuietTime1(),
-    QuietTime1(),
+    Schedule(),
     QuietTime2(),
-    QuietTime1()
+    FileUpload()
   ];
-  void _onItemTapped(int index){
-    setState((){
+
+  void _onItemTapped(int index) {
+    setState(() {
       _selectedIndex = index;
     });
     /*switch (index) {
@@ -79,10 +79,11 @@ class _QuietTimeState extends State<QuietTime>
         Navigator.pushNamed(context, '/fileUpload');
     }*/
   }
+
   static const TextStyle optionStyle = TextStyle(
     fontSize: 20,
   );
-  late TabController controller;
+  //late TabController controller;
 
   @override
   void initState() {
@@ -93,7 +94,7 @@ class _QuietTimeState extends State<QuietTime>
 
   @override
   void dispose() {
-    controller.dispose();
+    //controller.dispose();
     super.dispose();
   } //메모리 누수 방지
 
@@ -102,9 +103,11 @@ class _QuietTimeState extends State<QuietTime>
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xff8BC34A),
-        title: Text(
-          'Banseo Youth',
-          style: TextStyle(color: Colors.white),
+        title: Center(
+          child: Text(
+            'Banseo Youth',
+            style: TextStyle(color: Colors.white, fontFamily: 'Billabong', fontSize: 35),
+          ),
         ),
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(13))),
@@ -116,38 +119,45 @@ class _QuietTimeState extends State<QuietTime>
         children: <Widget>[QuietTime1(),QuietTime2(),QuietTime(),QuietTime1()],
         controller: controller,
       ),*/
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.book,
-                color: Colors.lightGreen,
-              ),
-              label: '큐티'),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.calendar_month_rounded,
-                color: Colors.lightGreen,
-              ),
-              label: '일정'),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.book_rounded,
-                color: Colors.lightGreen,
-              ),
-              label: '질문'),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Icons.photo_camera,
-                color: Colors.lightGreen,
-              ),
-              label: '추억')
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.green,
-        onTap: _onItemTapped,
-
-
+      bottomNavigationBar: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(15.0),
+          topRight: Radius.circular(15.0),
+          bottomLeft: Radius.circular(15.0),
+          bottomRight: Radius.circular(15.0)
+        ),
+        child: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.book,
+                  color: Colors.lightGreen,
+                ),
+                label: '큐티'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.calendar_month_rounded,
+                  color: Colors.lightGreen,
+                ),
+                label: '일정'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.book_rounded,
+                  color: Colors.lightGreen,
+                ),
+                label: '질문'),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.photo_camera,
+                  color: Colors.lightGreen,
+                ),
+                label: '추억')
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.green,
+          unselectedItemColor: Colors.grey,
+          onTap: _onItemTapped,
+        ),
       ),
       backgroundColor: Color(0xffDCEDC8),
     );

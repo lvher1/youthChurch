@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:youthchurch/MenuBottom.dart';
 import 'package:youthchurch/auth.dart';
 import 'package:flutter/material.dart';
@@ -143,6 +144,18 @@ class _QuietTime1 extends State<QuietTime1> {
                           "like": 0,
                           "content": content
                         });
+                        FirebaseFirestore.instance
+                            .collection('QuietTime')
+                            .doc('total')
+                            .get()
+                            .then((DocumentSnapshot ds) {
+                          var total = ds['total'];
+                          var total1 = total + 1;
+                          FirebaseFirestore.instance
+                              .collection('QuietTime')
+                              .doc('total')
+                              .update({"total": total1});
+                        });
                         Navigator.of(context).pop();
                       },
                       child: Text('QT등록')),
@@ -153,6 +166,17 @@ class _QuietTime1 extends State<QuietTime1> {
         });
   }
 
+  /*Future<void> _like(DocumentSnapshot documentSnapshot) async {
+    FirebaseFirestore.instance.collection('QuietTime').doc(documentSnapshot.id).collection('like').doc(currentUser.currentUser!.email.toString()).get().then(
+        (DocumentSnapshot doc){
+              final data = doc.data() as Map<String,dynamic>;
+              bool like = data['like'];
+
+        }
+    );
+
+  }*/
+  //bool isPressed = false;
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -166,22 +190,111 @@ class _QuietTime1 extends State<QuietTime1> {
   final currentUser = FirebaseAuth.instance;
   bool isPressed = false;
 
+  //AggregateQuerySnapshot querySnapshot = .count().get() as AggregateQuerySnapshot;
+  //print(querySnapshot);
+  //int numberOfDocs = querySnapshot.count;
+  //QuerySnapshot _doc = await FirebaseFirestore.instance.collection('QuietTime').get();
+  //List<DocumentSnapshot> _docCount = doc.
+  int counting() {
+    int count = 0;
+    FirebaseFirestore.instance
+        .collection('QuietTime')
+        .count()
+        .get()
+        .then((value) => count = value.count);
+    return count;
+  }
+
+  Future<void> increase(DocumentSnapshot documentSnapshot) async {
+    var count = documentSnapshot['like'];
+    var plus = count++;
+    FirebaseFirestore.instance
+        .collection('QuietTime')
+        .doc(documentSnapshot.id)
+        .update({"like": plus});
+  }
+
+  Future<void> decrease(DocumentSnapshot documentSnapshot) async {
+    var count = documentSnapshot['like'];
+    var minus = count--;
+    FirebaseFirestore.instance
+        .collection('QuietTime')
+        .doc(documentSnapshot.id)
+        .update({"like": minus});
+  }
+  Future<int> getCount() async{
+    DocumentSnapshot countDoc = await FirebaseFirestore.instance.collection('QuietTime').doc('total').get();
+    var count = countDoc[''];
+    return count;
+  }
+
+  var PressList = new List.filled(8, false, growable: true);
+
+  void likeWrite(DocumentSnapshot documentSnapshot, bool boolLike) {
+    FirebaseFirestore.instance
+        .collection('QuietTime')
+        .doc(documentSnapshot.id)
+        .collection('response')
+        .doc(currentUser.currentUser!.email.toString())
+        .update({"like": boolLike});
+  }
+
+  void createWrite(DocumentSnapshot documentSnapshot, bool boolLike) {
+    FirebaseFirestore.instance
+        .collection('QuietTime')
+        .doc(documentSnapshot.id)
+        .collection('response')
+        .doc(currentUser.currentUser!.email.toString())
+        .set({"like": boolLike});
+  }
+
+  //var PressList = new List.empty(growable: true);
+
+  //bool first = FirebaseFirestore.instance.collection('QuietTime').get().then((value) => null)
+
+  //var PressList = [true,true,false,true,false];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Quiet Time'),
-      ),
+      /*appBar: AppBar(
+        title: Text('Quiet Time',style: TextStyle(fontFamily: 'Billabong'),),
+      ),*/
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('QuietTime').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('QuietTime')
+            .orderBy('datetime', descending: true)
+            .snapshots(),
         builder: (BuildContext context,
             AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+          if(!streamSnapshot.hasData){
+            return const Center(child: CircularProgressIndicator(),);
+          }
           if (streamSnapshot.hasData) {
             return ListView.builder(
               itemCount: streamSnapshot.data!.docs.length,
               itemBuilder: (context, index) {
+                //var PressList = new List<bool>.filled()
+                //var PressList = [];
                 final DocumentSnapshot documentSnapshot =
                     streamSnapshot.data!.docs[index];
+                Timestamp timestamp = documentSnapshot['datetime'] as Timestamp;
+                DateTime date = timestamp.toDate();
+                final likeSentence = FirebaseFirestore.instance
+                    .collection('QuietTime')
+                    .doc(documentSnapshot.id)
+                    .collection('response')
+                    .doc(currentUser.currentUser!.email.toString());
+                //DocumentSnapshot doc1 = likeSentence.get() as DocumentSnapshot<Object?>;
+                likeSentence.get().then((DocumentSnapshot doc1) {
+                  if (doc1.data() == null) {
+                    PressList.insert(index, false);
+                    print('data is null');
+                  } else {
+                    PressList[index] = doc1['like'];
+                  }
+                });
+                //PressList.addAll([true,true,true,true]);
                 return Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -222,17 +335,19 @@ class _QuietTime1 extends State<QuietTime1> {
                     Flexible(
                       fit: FlexFit.loose,
                       child: Container(
-                        width: 400,
-                        height: 200,
-                        margin: EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 8.0),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.lightGreen),
-                          color: Colors.white
-                        ),
+                          width: 400,
+                          height: 200,
+                          margin: EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 8.0),
+                          padding: EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 8.0),
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.lightGreen),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                              color: Colors.white),
                           child: new Text(
-                        documentSnapshot['content'],
-                        style: TextStyle(color: Colors.green),
-                      )),
+                            documentSnapshot['content'],
+                            style: TextStyle(color: Colors.green),
+                          )),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -243,27 +358,77 @@ class _QuietTime1 extends State<QuietTime1> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               new IconButton(
-                                icon: new Icon(isPressed
+                                icon: new Icon(PressList[index]
                                     ? Icons.favorite
-                                    : FontAwesomeIcons.heart),
-                                color: isPressed ? Colors.red : Colors.black,
+                                    : Icons.favorite_border),
+                                color: PressList[index]
+                                    ? Colors.red
+                                    : Colors.black,
                                 onPressed: () {
+                                  //print(PressList[index]);
                                   setState(() {
-                                    isPressed = !isPressed;
+                                    if (PressList[index] == true) {
+                                      PressList[index] = false;
+                                      decrease(documentSnapshot);
+                                      //print(PressList[index]);
+                                    } else if (PressList[index] == false) {
+                                      PressList[index] = true;
+                                      increase(documentSnapshot);
+                                      //print(PressList[index]);
+                                    }
+                                    likeSentence
+                                        .get()
+                                        .then((DocumentSnapshot doc2) {
+                                      if (doc2.data() == null) {
+                                        createWrite(
+                                            documentSnapshot, PressList[index]);
+                                      } else {
+                                        likeWrite(
+                                            documentSnapshot, PressList[index]);
+                                        print(
+                                            '${index}번 변경: ${PressList[index]}');
+                                      }
+                                      ;
+                                    });
+                                    //PressList[index] = !PressList[index];
+                                    print(PressList[index]);
                                   });
                                 },
                               ),
                               new SizedBox(
-                                width: 16.0,
+                                width: 10.0,
                               ),
-                              new Icon(
-                                FontAwesomeIcons.comment,
+                              new IconButton(
+                                onPressed: (){
+
+                                },
+                                icon: new Icon(
+                                  FontAwesomeIcons.comment,
+                                ),
                               ),
+                              /*new SizedBox(
+                                width: 20.0,
+                              ),*/
+                              //new Icon(FontAwesomeIcons.paperPlane),
                               new SizedBox(
-                                width: 16.0,
+                                width: 10.0,
                               ),
-                              new Icon(FontAwesomeIcons.paperPlane),
+                              new IconButton(
+                                  onPressed: () {
+                                    _update(documentSnapshot);
+                                  },
+                                  icon: new Icon(FontAwesomeIcons.pencil)),
+                              new SizedBox(
+                                width: 10.0,
+                              ),
+                              new IconButton(
+                                  onPressed: () {
+                                    //_update(documentSnapshot); delete
+                                  },
+                                  icon: new Icon(FontAwesomeIcons.eraser)),
+
                             ],
+
                           ),
                           //new Icon(FontAwesomeIcons.bookmark)
                         ],
@@ -272,12 +437,12 @@ class _QuietTime1 extends State<QuietTime1> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Text(
-                        "Liked ${[documentSnapshot['like']]}",
+                        "Liked ${documentSnapshot['like']}",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(16.0, 16.0, 0.0, 8.0),
+                      padding: const EdgeInsets.fromLTRB(0, 16.0, 16.0, 8.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
@@ -293,14 +458,16 @@ class _QuietTime1 extends State<QuietTime1> {
                                     ),*/
                             ),
                           ),
-                          new SizedBox(
-                            width: 10.0,
-                          ),
                           Expanded(
-                            child: new TextField(
-                              decoration: new InputDecoration(
-                                border: InputBorder.none,
-                                hintText: "Add a comment...",
+                            child: Container(
+                              color: Colors.white,
+                              padding: const EdgeInsets.fromLTRB(15, 0, 0, 0),
+                              child: new TextField(
+                                cursorColor: Colors.greenAccent,
+                                decoration: new InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "Add a comment...",
+                                ),
                               ),
                             ),
                           ),
@@ -309,7 +476,7 @@ class _QuietTime1 extends State<QuietTime1> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text("1 Day Ago",
+                      child: Text(date.toString(),
                           style: TextStyle(color: Colors.grey)),
                     )
                   ],

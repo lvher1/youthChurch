@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.0.5 <4.0.0'
+  sdk: '>=3.0.0 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -40,6 +40,12 @@ dependencies:
   cloud_firestore: ^4.8.4
   firebase_analytics: ^10.4.4
   font_awesome_flutter: '>= 4.7.0'
+  firebase_storage: ^11.2.5
+  intl: ^0.18.1
+  file_picker: ^5.3.3
+  fluttertoast: ^8.2.2
+  image_picker: ^1.0.1
+  table_calendar: ^3.0.9
 
 dev_dependencies:
   flutter_test:
@@ -79,7 +85,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
+  fonts:
+    - family: Billabong
+      fonts:
+        - asset: assets/fonts/Billabong.ttf
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
